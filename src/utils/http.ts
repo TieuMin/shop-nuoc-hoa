@@ -5,7 +5,7 @@ import { getAccessToken, destroyLogged, saveAuth } from "./jwt";
 import { APP_CONFIG } from "./env";
 
 const instance = axios.create({
-  baseURL: APP_CONFIG.apiUrl + APP_CONFIG.apiKey,
+  baseURL: APP_CONFIG.apiUrl,
   headers: { "Content-Type": "application/json" },
 });
 
