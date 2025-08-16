@@ -8,7 +8,7 @@ const About: React.FC = () => {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-5xl  font-bold text-gray-900 mb-6">
-            Giới thiệu về Rose Parfum
+            Giới thiệu về Rose Perfume
           </h1>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
             Chúng tôi đam mê sáng tạo và tuyển chọn những loại nước hoa hảo hạng
@@ -24,7 +24,7 @@ const About: React.FC = () => {
               Câu chuyện của chúng tôi
             </h2>
             <p className="text-gray-700 leading-relaxed">
-              Được thành lập vào năm 2020, Rose Parfum ra đời từ một niềm tin
+              Được thành lập vào năm 2020, Rose Perfume ra đời từ một niềm tin
               giản dị: hương thơm là một trong những hình thức thể hiện bản thân
               mạnh mẽ nhất. Những người sáng lập của chúng tôi, những người đam
               mê nước hoa, đã đặt mục tiêu mang hương thơm cao cấp đến gần hơn

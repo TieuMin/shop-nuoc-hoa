@@ -152,7 +152,7 @@ const Navigation: React.FC = () => {
           <Link to="/" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-pink-700 rounded-full"></div>
             <span className="text-xl  font-semibold text-gray-900">
-              Rose Parfum
+              Rose Perfume
             </span>
           </Link>
 
