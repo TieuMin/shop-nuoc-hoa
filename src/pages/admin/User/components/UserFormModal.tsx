@@ -4,6 +4,8 @@ import { ModalAction } from "../../../../store/common/interface";
 import { Lock, User } from "lucide-react";
 import TextArea from "antd/es/input/TextArea";
 import userApi from "../api/userApi";
+import { getAccessToken } from "../../../../utils/jwt";
+import { APP_CONFIG } from "../../../../utils/env";
 
 interface Prop {
   actionData: ModalAction;
@@ -14,6 +16,7 @@ interface Prop {
 const UserFormModal = ({ onClose, onSussces, actionData }: Prop) => {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const token = getAccessToken(APP_CONFIG.tokenAdminKey);
 
   useEffect(() => {
     if (actionData?.data?.id) {
@@ -29,7 +32,10 @@ const UserFormModal = ({ onClose, onSussces, actionData }: Prop) => {
 
       let res = null;
       if (actionData?.data?.id)
-        res = await userApi.update({ ...dataForm, id: actionData?.data?.id });
+        res = await userApi.update(
+          { ...dataForm, id: actionData?.data?.id },
+          token
+        );
       else res = await userApi.create(dataForm);
       setIsLoading(false);
       if (res?.success) {

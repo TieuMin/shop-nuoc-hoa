@@ -28,9 +28,9 @@ class UserApi {
       action: ActionType.createUser,
     });
   };
-  update = async (payload: ObjAny): Promise<ObjAny> => {
+  update = async (payload: ObjAny, token?: string): Promise<ObjAny> => {
     return HttpService.post(`${this.model}`, {
-      payload: { ...payload, token: this.token },
+      payload: { ...payload, token: token ?? this.token },
       action: ActionType.updateUser,
     });
   };
