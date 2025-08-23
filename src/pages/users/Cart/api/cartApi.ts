@@ -19,9 +19,9 @@ class CartApi {
       action: ActionType.getCarts,
     });
   };
-  create = async (payload: ObjAny): Promise<ObjAny> => {
+  create = async (payload: ObjAny, token?: string): Promise<ObjAny> => {
     return HttpService.post(`${this.model}`, {
-      payload: { ...payload, token: this.token },
+      payload: { ...payload, token: token ?? this.token },
       action: ActionType.createCart,
     });
   };

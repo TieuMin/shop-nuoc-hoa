@@ -24,6 +24,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const profile: any = getAccessToken(APP_CONFIG.profileKey ?? "", true);
+  const token = getAccessToken(APP_CONFIG.tokenKey);
   const [api, contextHolder] = notification.useNotification();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
@@ -46,6 +47,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         price: itemPrice?.price,
         quantity: 1,
         discount: product.discount ?? 0,
+        token,
       });
       setIsLoading(false);
       if (res?.success) {
