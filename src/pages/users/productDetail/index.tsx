@@ -108,6 +108,7 @@ const ProductDetail: React.FC = () => {
         price: priceSelected?.price,
         quantity: quantity,
         discount: productData.discount ?? 0,
+        token,
       });
       setIsLoading(false);
       if (res?.success) {
