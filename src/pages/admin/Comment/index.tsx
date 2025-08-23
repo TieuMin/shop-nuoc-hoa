@@ -14,8 +14,6 @@ import { columnsComment } from "./stores/columns";
 import commentApi from "./api/commentApi";
 import productApi from "../Product/api/productApi";
 import { ProductList } from "../Product/stores/interface";
-import { getAccessToken } from "../../../utils/jwt";
-import { APP_CONFIG } from "../../../utils/env";
 
 const Comment = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -25,21 +23,19 @@ const Comment = () => {
   });
   const [isProduct, setIsProduct] = useState<boolean>(false);
   const [productList, setProductList] = useState<OptionSelect[]>([]);
-  const token = getAccessToken(APP_CONFIG.tokenAdminKey);
 
   useEffect(() => {
-    if (token && !isLoading) fetchDataList();
+    if (!isLoading) fetchDataList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramFilter, token]);
+  }, [paramFilter]);
 
   useEffect(() => {
     fetchProduct();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchDataList = async () => {
     setIsLoading(true);
-    const res = await commentApi.list(paramFilter, token);
+    const res = await commentApi.list(paramFilter);
     setIsLoading(false);
     if (res?.statusCode == 200) setResData(res as CommentModel);
     else setResData(undefined);
@@ -48,7 +44,7 @@ const Comment = () => {
   const fetchProduct = async () => {
     setIsProduct(true);
     try {
-      const res = await productApi.list(filterSelectList, token);
+      const res = await productApi.list(filterSelectList);
       setIsProduct(false);
       if (res?.data) {
         const newLst = res.data?.map((x: ProductList) => ({

@@ -28,8 +28,6 @@ import categoryApi from "../Category/api/categoryApi";
 import { CategoryList } from "../Category/stores/interface";
 import trademarksApi from "../Trademark/api/trademarkApi";
 import { TrademarkList } from "../Trademark/stores/interface";
-import { getAccessToken } from "../../../utils/jwt";
-import { APP_CONFIG } from "../../../utils/env";
 
 const Product = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -42,22 +40,20 @@ const Product = () => {
   const [categoryList, setCategoryList] = useState<OptionSelect[]>([]);
   const [isTrademark, setIsTrademark] = useState<boolean>(false);
   const [trademarkList, setTrademarkList] = useState<OptionSelect[]>([]);
-  const token = getAccessToken(APP_CONFIG.tokenAdminKey);
 
   useEffect(() => {
     fetchCategory();
     fetchTrademark();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (token && !isLoading) fetchDataList();
+    if (!isLoading) fetchDataList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramFilter, token]);
+  }, [paramFilter]);
 
   const fetchDataList = async () => {
     setIsLoading(true);
-    const res = await productApi.list(paramFilter, token);
+    const res = await productApi.list(paramFilter);
     setIsLoading(false);
     if (res?.statusCode == 200) setResData(res as ProductModel);
     else setResData(undefined);
@@ -66,7 +62,7 @@ const Product = () => {
   const fetchCategory = async () => {
     setIsCategory(true);
     try {
-      const res = await categoryApi.list(filterSelectList, token);
+      const res = await categoryApi.list(filterSelectList);
       setIsCategory(false);
       if (res?.data) {
         const newLst = res.data?.map((x: CategoryList) => ({
@@ -84,7 +80,7 @@ const Product = () => {
   const fetchTrademark = async () => {
     setIsTrademark(true);
     try {
-      const res = await trademarksApi.list(filterSelectList, token);
+      const res = await trademarksApi.list(filterSelectList);
       setIsTrademark(false);
       if (res?.data) {
         const newLst = res.data?.map((x: TrademarkList) => ({

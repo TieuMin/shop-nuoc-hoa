@@ -14,7 +14,6 @@ interface Prop {
 
 const CategoryFormModal = ({ onClose, onSussces, actionData }: Prop) => {
   const [form] = Form.useForm();
-  const token = getAccessToken(APP_CONFIG.tokenKey);
   const profile: any = getAccessToken(APP_CONFIG.profileKey ?? "", true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -38,7 +37,7 @@ const CategoryFormModal = ({ onClose, onSussces, actionData }: Prop) => {
         userId: profile?.id ?? 0,
         orderId: actionData?.data?.id ?? 0,
       };
-      const res = await commentApi.create(payload, token);
+      const res = await commentApi.create(payload);
       setIsLoading(false);
 
       if (res?.success) {

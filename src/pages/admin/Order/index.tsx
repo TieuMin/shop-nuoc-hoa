@@ -15,8 +15,6 @@ import { columnsUsers } from "./stores/columns";
 import orderApi from "./api/orderApi";
 import productApi from "../Product/api/productApi";
 import { ProductList } from "../Product/stores/interface";
-import { getAccessToken } from "../../../utils/jwt";
-import { APP_CONFIG } from "../../../utils/env";
 import InputSearchDebounce from "../../../components/InputSearchDebounce/InputSearchDebounce";
 
 const Order = () => {
@@ -27,21 +25,19 @@ const Order = () => {
   });
   const [isProduct, setIsProduct] = useState<boolean>(false);
   const [productList, setProductList] = useState<OptionSelect[]>([]);
-  const token = getAccessToken(APP_CONFIG.tokenAdminKey);
 
   useEffect(() => {
-    if (token && !isLoading) fetchDataList();
+    if (!isLoading) fetchDataList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramFilter, token]);
+  }, [paramFilter]);
 
   useEffect(() => {
     fetchProduct();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchDataList = async () => {
     setIsLoading(true);
-    const res = await orderApi.list(paramFilter, token);
+    const res = await orderApi.list(paramFilter);
     setIsLoading(false);
     if (res?.statusCode == 200) setResData(res as OrderModel);
     else setResData(undefined);
@@ -50,7 +46,7 @@ const Order = () => {
   const fetchProduct = async () => {
     setIsProduct(true);
     try {
-      const res = await productApi.list(filterSelectList, token);
+      const res = await productApi.list(filterSelectList);
       setIsProduct(false);
       if (res?.data) {
         const newLst = res.data?.map((x: ProductList) => ({

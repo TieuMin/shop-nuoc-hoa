@@ -21,7 +21,7 @@ class AuthApi {
 
         const token = res?.token;
         if (token) await saveToken(APP_CONFIG.tokenAdminKey, token);
-        if (res?.user) await saveAuth(res?.user);
+        if (res?.user) await saveAuth(res?.user, true);
 
         notification.success({
           message: "Đăng nhập thành công",

@@ -9,7 +9,7 @@ const NavigationAdmin: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
   const menuRef = useRef<HTMLDivElement | null>(null);
-  const user = getAuth();
+  const user = getAuth(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const NavigationAdmin: React.FC = () => {
   const isActive = (path: string) => location.pathname === path;
 
   const onLogout = () => {
-    destroyLogged();
+    destroyLogged(true);
     setIsDropdownOpen(false);
     navigate("/admin/login");
   };

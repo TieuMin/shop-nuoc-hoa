@@ -22,8 +22,6 @@ import voucherApi from "./api/voucherApi";
 import { PlusOutlined } from "@ant-design/icons";
 import VoucherFormModal from "./components/VoucherFormModal";
 import InputSearchDebounce from "../../../components/InputSearchDebounce/InputSearchDebounce";
-import { getAccessToken } from "../../../utils/jwt";
-import { APP_CONFIG } from "../../../utils/env";
 
 const Voucher = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -32,16 +30,15 @@ const Voucher = () => {
   const [paramFilter, setParamFilter] = useState<FilterDefaultModel>({
     ...filterDefault,
   });
-  const token = getAccessToken(APP_CONFIG.tokenAdminKey);
 
   useEffect(() => {
-    if (!isLoading && token) fetchDataList();
+    if (!isLoading) fetchDataList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paramFilter]);
 
   const fetchDataList = async () => {
     setIsLoading(true);
-    const res = await voucherApi.list(paramFilter, token);
+    const res = await voucherApi.list(paramFilter);
     setIsLoading(false);
     if (res?.statusCode == 200) setResData(res as VoucherModel);
     else setResData(undefined);

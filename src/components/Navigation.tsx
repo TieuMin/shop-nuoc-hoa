@@ -25,7 +25,6 @@ import { VoucherList } from "../pages/admin/Voucher/stores/interface";
 const Navigation: React.FC = () => {
   const navigate = useNavigate();
   const profile: any = getAccessToken(APP_CONFIG.profileKey ?? "", true);
-  const token = getAccessToken(APP_CONFIG.tokenKey);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
@@ -66,16 +65,16 @@ const Navigation: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (profile && paramFilter?.payload?.userId && token) {
+    if (profile && paramFilter?.payload?.userId) {
       fetchTotalCart();
       fetchVoucherList();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramFilter, token]);
+  }, [paramFilter]);
 
   const fetchTotalCart = async () => {
     setIsCart(true);
-    const res = await cartApi.list(paramFilter, token);
+    const res = await cartApi.list(paramFilter);
     setIsCart(false);
     dispatch(changeTotalCart(res?.totalCart ?? 0));
     if (res?.data?.length) dispatch(changeCarts(res?.data));
@@ -83,7 +82,7 @@ const Navigation: React.FC = () => {
 
   const fetchVoucherList = async () => {
     setIsVoucher(true);
-    const res = await voucherApi.listUser(profile?.id ?? 0, token);
+    const res = await voucherApi.listUser(profile?.id ?? 0);
     setIsVoucher(false);
     if (res?.data?.length) {
       const newData: OptionSelect[] = res?.data?.map((x: VoucherList) => ({

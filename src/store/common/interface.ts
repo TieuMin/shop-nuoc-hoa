@@ -12,7 +12,6 @@ export interface ObjAny {
 export interface FilterDefaultModel {
   action: string;
   payload: {
-    token: string;
     page: number;
     pageSize: number;
     [x: string]: string | number;

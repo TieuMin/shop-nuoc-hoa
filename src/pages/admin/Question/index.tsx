@@ -4,8 +4,6 @@ import { QuestionList, QuestionModel } from "./stores/interface";
 import { FilterDefaultModel } from "../../../store/common/interface";
 import { filterDefault, questionStatus } from "../../../store/common/constants";
 import { columnsQuestion } from "./stores/columns";
-import { getAccessToken } from "../../../utils/jwt";
-import { APP_CONFIG } from "../../../utils/env";
 import questionApi from "./api/questionApi";
 import InputSearchDebounce from "../../../components/InputSearchDebounce/InputSearchDebounce";
 
@@ -15,16 +13,15 @@ const Question = () => {
   const [paramFilter, setParamFilter] = useState<FilterDefaultModel>({
     ...filterDefault,
   });
-  const token = getAccessToken(APP_CONFIG.tokenAdminKey);
 
   useEffect(() => {
-    if (token && !isLoading) fetchDataList();
+    if (!isLoading) fetchDataList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramFilter, token]);
+  }, [paramFilter]);
 
   const fetchDataList = async () => {
     setIsLoading(true);
-    const res = await questionApi.list(paramFilter, token);
+    const res = await questionApi.list(paramFilter);
     setIsLoading(false);
     if (res?.statusCode == 200) setResData(res as QuestionModel);
     else setResData(undefined);

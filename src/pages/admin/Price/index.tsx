@@ -22,8 +22,6 @@ import priceApi from "./api/priceApi";
 import { PlusOutlined } from "@ant-design/icons";
 import PriceFormModal from "./components/PriceFormModal";
 import InputSearchDebounce from "../../../components/InputSearchDebounce/InputSearchDebounce";
-import { getAccessToken } from "../../../utils/jwt";
-import { APP_CONFIG } from "../../../utils/env";
 
 const Category = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -32,16 +30,15 @@ const Category = () => {
   const [paramFilter, setParamFilter] = useState<FilterDefaultModel>({
     ...filterDefault,
   });
-  const token = getAccessToken(APP_CONFIG.tokenAdminKey);
 
   useEffect(() => {
-    if (token && !isLoading) fetchDataList();
+    if (!isLoading) fetchDataList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramFilter, token]);
+  }, [paramFilter]);
 
   const fetchDataList = async () => {
     setIsLoading(true);
-    const res = await priceApi.list(paramFilter, token);
+    const res = await priceApi.list(paramFilter);
     setIsLoading(false);
     if (res?.statusCode == 200) setResData(res as PriceModel);
     else setResData(undefined);

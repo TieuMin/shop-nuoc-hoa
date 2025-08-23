@@ -34,7 +34,6 @@ import { Link } from "react-router-dom";
 
 const Orders: React.FC = () => {
   const navigate = useNavigate();
-  const token = getAccessToken(APP_CONFIG.tokenKey);
   const profile: any = getAccessToken(APP_CONFIG.profileKey ?? "", true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isRefund, setIsRefund] = useState<boolean>(false);
@@ -58,13 +57,13 @@ const Orders: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (profile && paramFilter?.payload?.userId && token) fetchDataList();
+    if (profile && paramFilter?.payload?.userId) fetchDataList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paramFilter]);
 
   const fetchDataList = async () => {
     setIsLoading(true);
-    const res = await orderApi.list(paramFilter, token);
+    const res = await orderApi.list(paramFilter);
     setIsLoading(false);
     if (res?.statusCode == 200) setResData(res as OrderModel);
     else setResData(undefined);
@@ -175,9 +174,8 @@ const Orders: React.FC = () => {
     const payload = {
       id,
       status: OrderStatus.Refund,
-      token,
     };
-    const res = await orderApi.update(payload, token);
+    const res = await orderApi.update(payload);
     setIsRefund(false);
     if (res?.statusCode == 200) setResData(res as OrderModel);
     else setResData(undefined);

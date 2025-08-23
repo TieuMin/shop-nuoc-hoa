@@ -6,8 +6,10 @@ export const getAccessToken = (name: string, isParse?: boolean) => {
   return getCookie(name) || null;
 };
 
-export const getAuth = () => {
-  const cookie = getCookie(APP_CONFIG.profileKey);
+export const getAuth = (isAdmin?: boolean) => {
+  const cookie = getCookie(
+    isAdmin ? APP_CONFIG.profileAdKey : APP_CONFIG.profileKey
+  );
   if (!cookie) return null;
   try {
     return JSON.parse(cookie);
@@ -17,9 +19,9 @@ export const getAuth = () => {
   }
 };
 
-export const saveAuth = (auth: any, exdays = 1) => {
+export const saveAuth = (auth: any, isAdmin?: boolean, exdays = 1) => {
   saveCookie({
-    name: APP_CONFIG.profileKey,
+    name: isAdmin ? APP_CONFIG.profileAdKey : APP_CONFIG.profileKey,
     value: JSON.stringify(auth),
     exdays,
   });
@@ -29,9 +31,9 @@ export const saveToken = (name: string, accessToken: string, exdays = 1) => {
   saveCookie({ name, value: accessToken, exdays });
 };
 
-export const destroyLogged = () => {
-  delCookie(APP_CONFIG.tokenKey);
-  delCookie(APP_CONFIG.tokenAdminKey);
+export const destroyLogged = (isAdmin?: boolean) => {
+  if (isAdmin) delCookie(APP_CONFIG.tokenAdminKey);
+  else delCookie(APP_CONFIG.tokenKey);
   delCookie(APP_CONFIG.profileKey);
   localStorage.clear();
 };

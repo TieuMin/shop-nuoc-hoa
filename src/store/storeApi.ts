@@ -14,6 +14,7 @@ import { history } from "../routes/history";
 
 // Hàm hiển thị thông báo lỗi
 export const printHttpError = (httpStatus: number, path: string): void => {
+  const isAdminRoute = window.location.pathname.startsWith("/admin");
   switch (httpStatus) {
     case 400:
       notification.error({
@@ -22,9 +23,9 @@ export const printHttpError = (httpStatus: number, path: string): void => {
       });
       break;
     case 401:
-      destroyLogged();
-      saveAuth(null);
-      history.push("/login");
+      destroyLogged(isAdminRoute);
+      saveAuth(null, isAdminRoute);
+      history.push(isAdminRoute ? "/admin/login" : "/login");
       break;
     case 403:
       notification.error({

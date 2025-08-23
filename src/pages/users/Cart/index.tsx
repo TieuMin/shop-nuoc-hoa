@@ -26,7 +26,6 @@ const Cart: React.FC = () => {
   const [voucherLst, setVoucherLst] = useState<OptionSelect[]>([]);
   const [cartList, setCartList] = useState<CartList[]>([]);
   const profile: any = getAccessToken(APP_CONFIG.profileKey ?? "", true);
-  const token = getAccessToken(APP_CONFIG.tokenKey);
   const [paramFilter, setParamFilter] = useState<FilterDefaultModel>({
     ...filterDefault,
   });
@@ -48,9 +47,9 @@ const Cart: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (profile && paramFilter?.payload?.userId && token) fetchDataList();
+    if (profile && paramFilter?.payload?.userId) fetchDataList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramFilter, token]);
+  }, [paramFilter]);
 
   useEffect(() => {
     if (vouchers?.length) setVoucherLst(vouchers);
@@ -58,7 +57,7 @@ const Cart: React.FC = () => {
 
   const fetchDataList = async () => {
     setIsLoading(true);
-    const res = await cartApi.list(paramFilter, token);
+    const res = await cartApi.list(paramFilter);
     setIsLoading(false);
     if (res?.totalCart) dispatch(changeTotalCart(res?.totalCart ?? 0));
     if (res?.data?.length) setCartList(res?.data);

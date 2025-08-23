@@ -22,8 +22,6 @@ import categoryApi from "./api/categoryApi";
 import { PlusOutlined } from "@ant-design/icons";
 import CategoryFormModal from "./components/CategoryFormModal";
 import InputSearchDebounce from "../../../components/InputSearchDebounce/InputSearchDebounce";
-import { APP_CONFIG } from "../../../utils/env";
-import { getAccessToken } from "../../../utils/jwt";
 
 const Category = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -32,16 +30,15 @@ const Category = () => {
   const [paramFilter, setParamFilter] = useState<FilterDefaultModel>({
     ...filterDefault,
   });
-  const token = getAccessToken(APP_CONFIG.tokenAdminKey);
 
   useEffect(() => {
-    if (token && !isLoading) fetchDataList();
+    if (!isLoading) fetchDataList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramFilter, token]);
+  }, [paramFilter]);
 
   const fetchDataList = async () => {
     setIsLoading(true);
-    const res = await categoryApi.list(paramFilter, token);
+    const res = await categoryApi.list(paramFilter);
     setIsLoading(false);
     if (res?.statusCode == 200) setResData(res as CategoryModel);
     else setResData(undefined);

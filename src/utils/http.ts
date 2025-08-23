@@ -46,8 +46,8 @@ function handleError(err: any) {
 
   switch (err?.statusCode) {
     case 401:
-      destroyLogged();
-      saveAuth(null);
+      destroyLogged(isAdminRoute);
+      saveAuth(null, isAdminRoute);
       history.push(isAdminRoute ? "/admin/login" : "/login");
       break;
     case 403:

@@ -26,7 +26,6 @@ const ProductDetail: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
-  const token = getAccessToken(APP_CONFIG.tokenKey);
   const profile: any = getAccessToken(APP_CONFIG.profileKey ?? "", true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFetchCart, setIsFetchCart] = useState<boolean>(false);
@@ -108,7 +107,6 @@ const ProductDetail: React.FC = () => {
         price: priceSelected?.price,
         quantity: quantity,
         discount: productData.discount ?? 0,
-        token,
       });
       setIsLoading(false);
       if (res?.success) {
@@ -126,7 +124,7 @@ const ProductDetail: React.FC = () => {
 
   const fetchDataCart = async () => {
     setIsFetchCart(true);
-    const res = await cartApi.list(paramFilter, token);
+    const res = await cartApi.list(paramFilter);
     setIsFetchCart(false);
     if (res?.totalCart) dispatch(changeTotalCart(res?.totalCart ?? 0));
     else dispatch(changeTotalCart(0));

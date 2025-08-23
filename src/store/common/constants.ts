@@ -71,7 +71,6 @@ export enum ActionType {
 export const filterDefault: FilterDefaultModel = {
   action: "",
   payload: {
-    token: "",
     page: 1,
     pageSize: 10,
   },

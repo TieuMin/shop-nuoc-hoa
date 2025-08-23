@@ -24,7 +24,6 @@ const Checkout: React.FC = () => {
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
   const profile: any = getAccessToken(APP_CONFIG.profileKey ?? "", true);
-  const token = getAccessToken(APP_CONFIG.tokenKey);
   const voucher = useAppSelector((state) => state.common.voucher);
   const [voucherLst, setVoucherLst] = useState<OptionSelect[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -67,7 +66,6 @@ const Checkout: React.FC = () => {
         discount: getVoucherQuantity(),
         total: getTotal(cartList?.length ? 20000 : 0, getVoucherQuantity()),
         voucherId: voucher || "",
-        token,
       };
       const res = await orderApi.create(payload);
       setIsLoading(false);
@@ -90,7 +88,7 @@ const Checkout: React.FC = () => {
   };
 
   const fetchVoucherList = async () => {
-    const res = await voucherApi.listUser(profile?.id ?? 0, token);
+    const res = await voucherApi.listUser(profile?.id ?? 0);
     if (res?.data?.length) {
       const newData: OptionSelect[] = res?.data?.map((x: VoucherList) => ({
         ...x,
