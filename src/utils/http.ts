@@ -11,7 +11,10 @@ const instance = axios.create({
 
 // Request Interceptor
 instance.interceptors.request.use((config) => {
-  const token = getAccessToken(APP_CONFIG.tokenKey);
+  const isAdminRoute = window.location.pathname.startsWith("/admin");
+  const token = getAccessToken(
+    isAdminRoute ? APP_CONFIG.tokenAdminKey : APP_CONFIG.tokenKey
+  );
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
     config.headers.Accept = "application/json";
